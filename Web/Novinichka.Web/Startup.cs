@@ -1,27 +1,26 @@
-﻿namespace Novinichka.Web
+﻿using System.Reflection;
+
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Novinichka.Data;
+using Novinichka.Data.Common;
+using Novinichka.Data.Common.Repositories;
+using Novinichka.Data.Models;
+using Novinichka.Data.Repositories;
+using Novinichka.Data.Seeding;
+using Novinichka.Services.Data;
+using Novinichka.Services.Mapping;
+using Novinichka.Services.Messaging;
+using Novinichka.Web.ViewModels;
+
+namespace Novinichka.Web
 {
-    using System.Reflection;
-
-    using Novinichka.Data;
-    using Novinichka.Data.Common;
-    using Novinichka.Data.Common.Repositories;
-    using Novinichka.Data.Models;
-    using Novinichka.Data.Repositories;
-    using Novinichka.Data.Seeding;
-    using Novinichka.Services.Data;
-    using Novinichka.Services.Mapping;
-    using Novinichka.Services.Messaging;
-    using Novinichka.Web.ViewModels;
-
-    using Microsoft.AspNetCore.Builder;
-    using Microsoft.AspNetCore.Hosting;
-    using Microsoft.AspNetCore.Http;
-    using Microsoft.AspNetCore.Mvc;
-    using Microsoft.EntityFrameworkCore;
-    using Microsoft.Extensions.Configuration;
-    using Microsoft.Extensions.DependencyInjection;
-    using Microsoft.Extensions.Hosting;
-
     public class Startup
     {
         private readonly IConfiguration configuration;

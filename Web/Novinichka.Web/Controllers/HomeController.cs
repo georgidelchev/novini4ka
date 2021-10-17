@@ -1,11 +1,10 @@
-﻿namespace Novinichka.Web.Controllers
+﻿using System.Diagnostics;
+
+using Microsoft.AspNetCore.Mvc;
+using Novinichka.Web.ViewModels;
+
+namespace Novinichka.Web.Controllers
 {
-    using System.Diagnostics;
-
-    using Novinichka.Web.ViewModels;
-
-    using Microsoft.AspNetCore.Mvc;
-
     public class HomeController : BaseController
     {
         public IActionResult Index()

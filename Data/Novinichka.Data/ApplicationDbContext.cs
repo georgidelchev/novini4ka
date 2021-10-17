@@ -1,17 +1,16 @@
-﻿namespace Novinichka.Data
+﻿using System;
+using System.Linq;
+using System.Reflection;
+using System.Threading;
+using System.Threading.Tasks;
+
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
+using Novinichka.Data.Common.Models;
+using Novinichka.Data.Models;
+
+namespace Novinichka.Data
 {
-    using System;
-    using System.Linq;
-    using System.Reflection;
-    using System.Threading;
-    using System.Threading.Tasks;
-
-    using Novinichka.Data.Common.Models;
-    using Novinichka.Data.Models;
-
-    using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-    using Microsoft.EntityFrameworkCore;
-
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, string>
     {
         private static readonly MethodInfo SetIsDeletedQueryFilterMethod =
@@ -25,6 +24,8 @@
         }
 
         public DbSet<Setting> Settings { get; set; }
+
+        public DbSet<News> News { get; set; }
 
         public override int SaveChanges() => this.SaveChanges(true);
 

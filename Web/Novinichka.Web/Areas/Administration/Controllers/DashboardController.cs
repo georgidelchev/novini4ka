@@ -1,10 +1,9 @@
-﻿namespace Novinichka.Web.Areas.Administration.Controllers
+﻿using Microsoft.AspNetCore.Mvc;
+using Novinichka.Services.Data;
+using Novinichka.Web.ViewModels.Administration.Dashboard;
+
+namespace Novinichka.Web.Areas.Administration.Controllers
 {
-    using Novinichka.Services.Data;
-    using Novinichka.Web.ViewModels.Administration.Dashboard;
-
-    using Microsoft.AspNetCore.Mvc;
-
     public class DashboardController : AdministrationController
     {
         private readonly ISettingsService settingsService;

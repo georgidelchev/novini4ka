@@ -1,11 +1,11 @@
-﻿namespace Novinichka.Data.Seeding
+﻿using System;
+using System.Linq;
+using System.Threading.Tasks;
+
+using Novinichka.Data.Models;
+
+namespace Novinichka.Data.Seeding
 {
-    using System;
-    using System.Linq;
-    using System.Threading.Tasks;
-
-    using Novinichka.Data.Models;
-
     internal class SettingsSeeder : ISeeder
     {
         public async Task SeedAsync(ApplicationDbContext dbContext, IServiceProvider serviceProvider)

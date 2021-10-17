@@ -1,12 +1,11 @@
-﻿namespace Novinichka.Data
+﻿using System;
+using System.Threading.Tasks;
+
+using Microsoft.EntityFrameworkCore;
+using Novinichka.Data.Common;
+
+namespace Novinichka.Data
 {
-    using System;
-    using System.Threading.Tasks;
-
-    using Novinichka.Data.Common;
-
-    using Microsoft.EntityFrameworkCore;
-
     public class DbQueryRunner : IDbQueryRunner
     {
         public DbQueryRunner(ApplicationDbContext context)

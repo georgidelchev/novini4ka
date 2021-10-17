@@ -1,7 +1,7 @@
-﻿namespace Novinichka.Data.Common.Models
-{
-    using System;
+﻿using System;
 
+namespace Novinichka.Data.Common.Models
+{
     public interface IAuditInfo
     {
         DateTime CreatedOn { get; set; }

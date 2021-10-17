@@ -1,11 +1,10 @@
-﻿namespace Novinichka.Data
+﻿using System.Linq;
+
+using Microsoft.EntityFrameworkCore;
+using Novinichka.Data.Common.Models;
+
+namespace Novinichka.Data
 {
-    using System.Linq;
-
-    using Novinichka.Data.Common.Models;
-
-    using Microsoft.EntityFrameworkCore;
-
     internal static class EntityIndexesConfiguration
     {
         public static void Configure(ModelBuilder modelBuilder)

@@ -1,15 +1,14 @@
-﻿namespace Novinichka.Web.Controllers
+﻿using System;
+using System.Threading.Tasks;
+
+using Microsoft.AspNetCore.Mvc;
+using Novinichka.Data.Common.Repositories;
+using Novinichka.Data.Models;
+using Novinichka.Services.Data;
+using Novinichka.Web.ViewModels.Settings;
+
+namespace Novinichka.Web.Controllers
 {
-    using System;
-    using System.Threading.Tasks;
-
-    using Novinichka.Data.Common.Repositories;
-    using Novinichka.Data.Models;
-    using Novinichka.Services.Data;
-    using Novinichka.Web.ViewModels.Settings;
-
-    using Microsoft.AspNetCore.Mvc;
-
     public class SettingsController : BaseController
     {
         private readonly ISettingsService settingsService;

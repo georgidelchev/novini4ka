@@ -1,12 +1,12 @@
-﻿namespace Novinichka.Services.Data
+﻿using System.Collections.Generic;
+using System.Linq;
+
+using Novinichka.Data.Common.Repositories;
+using Novinichka.Data.Models;
+using Novinichka.Services.Mapping;
+
+namespace Novinichka.Services.Data
 {
-    using System.Collections.Generic;
-    using System.Linq;
-
-    using Novinichka.Data.Common.Repositories;
-    using Novinichka.Data.Models;
-    using Novinichka.Services.Mapping;
-
     public class SettingsService : ISettingsService
     {
         private readonly IDeletableEntityRepository<Setting> settingsRepository;

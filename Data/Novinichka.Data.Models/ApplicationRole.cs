@@ -1,12 +1,11 @@
 ﻿// ReSharper disable VirtualMemberCallInConstructor
+using System;
+
+using Microsoft.AspNetCore.Identity;
+using Novinichka.Data.Common.Models;
+
 namespace Novinichka.Data.Models
 {
-    using System;
-
-    using Novinichka.Data.Common.Models;
-
-    using Microsoft.AspNetCore.Identity;
-
     public class ApplicationRole : IdentityRole, IAuditInfo, IDeletableEntity
     {
         public ApplicationRole()

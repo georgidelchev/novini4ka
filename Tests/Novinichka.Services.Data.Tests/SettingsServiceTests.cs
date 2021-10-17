@@ -1,20 +1,17 @@
-﻿namespace Novinichka.Services.Data.Tests
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+using Microsoft.EntityFrameworkCore;
+using Moq;
+using Novinichka.Data;
+using Novinichka.Data.Common.Repositories;
+using Novinichka.Data.Models;
+using Novinichka.Data.Repositories;
+using Xunit;
+
+namespace Novinichka.Services.Data.Tests
 {
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Threading.Tasks;
-
-    using Novinichka.Data;
-    using Novinichka.Data.Common.Repositories;
-    using Novinichka.Data.Models;
-    using Novinichka.Data.Repositories;
-
-    using Microsoft.EntityFrameworkCore;
-
-    using Moq;
-
-    using Xunit;
-
     public class SettingsServiceTests
     {
         [Fact]

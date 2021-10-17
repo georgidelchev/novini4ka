@@ -1,8 +1,8 @@
-﻿namespace Novinichka.Services.Messaging
-{
-    using System.Collections.Generic;
-    using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 
+namespace Novinichka.Services.Messaging
+{
     public class NullMessageSender : IEmailSender
     {
         public Task SendEmailAsync(

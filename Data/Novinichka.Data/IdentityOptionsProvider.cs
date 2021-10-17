@@ -1,7 +1,7 @@
-﻿namespace Novinichka.Data
-{
-    using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 
+namespace Novinichka.Data
+{
     public static class IdentityOptionsProvider
     {
         public static void GetIdentityOptions(IdentityOptions options)

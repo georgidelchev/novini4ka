@@ -1,9 +1,9 @@
-﻿namespace Novinichka.Data.Common.Repositories
+﻿using System.Linq;
+
+using Novinichka.Data.Common.Models;
+
+namespace Novinichka.Data.Common.Repositories
 {
-    using System.Linq;
-
-    using Novinichka.Data.Common.Models;
-
     public interface IDeletableEntityRepository<TEntity> : IRepository<TEntity>
         where TEntity : class, IDeletableEntity
     {

@@ -1,13 +1,12 @@
 ﻿// ReSharper disable VirtualMemberCallInConstructor
+using System;
+using System.Collections.Generic;
+
+using Microsoft.AspNetCore.Identity;
+using Novinichka.Data.Common.Models;
+
 namespace Novinichka.Data.Models
 {
-    using System;
-    using System.Collections.Generic;
-
-    using Novinichka.Data.Common.Models;
-
-    using Microsoft.AspNetCore.Identity;
-
     public class ApplicationUser : IdentityUser, IAuditInfo, IDeletableEntity
     {
         public ApplicationUser()

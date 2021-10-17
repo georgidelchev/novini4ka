@@ -1,7 +1,7 @@
-﻿namespace Novinichka.Services.Data
-{
-    using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
+namespace Novinichka.Services.Data
+{
     public interface ISettingsService
     {
         int GetCount();

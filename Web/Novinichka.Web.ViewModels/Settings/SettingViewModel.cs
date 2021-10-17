@@ -1,10 +1,9 @@
-﻿namespace Novinichka.Web.ViewModels.Settings
+﻿using AutoMapper;
+using Novinichka.Data.Models;
+using Novinichka.Services.Mapping;
+
+namespace Novinichka.Web.ViewModels.Settings
 {
-    using Novinichka.Data.Models;
-    using Novinichka.Services.Mapping;
-
-    using AutoMapper;
-
     public class SettingViewModel : IMapFrom<Setting>, IHaveCustomMappings
     {
         public int Id { get; set; }

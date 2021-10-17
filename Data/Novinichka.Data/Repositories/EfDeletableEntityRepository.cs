@@ -1,13 +1,12 @@
-﻿namespace Novinichka.Data.Repositories
+﻿using System;
+using System.Linq;
+
+using Microsoft.EntityFrameworkCore;
+using Novinichka.Data.Common.Models;
+using Novinichka.Data.Common.Repositories;
+
+namespace Novinichka.Data.Repositories
 {
-    using System;
-    using System.Linq;
-
-    using Novinichka.Data.Common.Models;
-    using Novinichka.Data.Common.Repositories;
-
-    using Microsoft.EntityFrameworkCore;
-
     public class EfDeletableEntityRepository<TEntity> : EfRepository<TEntity>, IDeletableEntityRepository<TEntity>
         where TEntity : class, IDeletableEntity
     {

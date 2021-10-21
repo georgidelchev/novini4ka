@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Novinichka.Services.Data
+namespace Novinichka.Services.Data.Interfaces
 {
     public interface ISettingsService
     {

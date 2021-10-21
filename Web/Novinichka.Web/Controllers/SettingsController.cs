@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Novinichka.Data.Common.Repositories;
 using Novinichka.Data.Models;
 using Novinichka.Services.Data;
+using Novinichka.Services.Data.Interfaces;
 using Novinichka.Web.ViewModels.Settings;
 
 namespace Novinichka.Web.Controllers

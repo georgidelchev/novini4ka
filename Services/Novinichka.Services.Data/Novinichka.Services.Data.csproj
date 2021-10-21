@@ -22,6 +22,7 @@
     <ProjectReference Include="..\..\Data\Novinichka.Data.Common\Novinichka.Data.Common.csproj" />
     <ProjectReference Include="..\..\Data\Novinichka.Data.Models\Novinichka.Data.Models.csproj" />
     <ProjectReference Include="..\Novinichka.Services.Mapping\Novinichka.Services.Mapping.csproj" />
+    <ProjectReference Include="..\Novinichka.Services\Novinichka.Services.csproj" />
   </ItemGroup>
 
 </Project>

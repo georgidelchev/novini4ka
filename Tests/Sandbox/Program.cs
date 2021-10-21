@@ -15,6 +15,8 @@ using Novinichka.Data.Models;
 using Novinichka.Data.Repositories;
 using Novinichka.Data.Seeding;
 using Novinichka.Services.Data;
+using Novinichka.Services.Data.Implementations;
+using Novinichka.Services.Data.Interfaces;
 using Novinichka.Services.Messaging;
 
 namespace Sandbox

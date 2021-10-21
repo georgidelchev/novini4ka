@@ -13,13 +13,15 @@ namespace Novinichka.Data.Models
         public string Content { get; set; }
 
         [Required]
-        public string Source { get; set; }
+        public int SourceId { get; set; }
 
-        [Required]
-        public string SourceUrl { get; set; }
+        public virtual Source Source { get; set; }
 
         [Required]
         public string OriginalUrl { get; set; }
+
+        [Required]
+        public string OriginalSourceId { get; set; }
 
         [Required]
         public string ImageUrl { get; set; }

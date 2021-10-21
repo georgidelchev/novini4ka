@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Novinichka.Services.Data;
+using Novinichka.Services.Data.Interfaces;
 using Novinichka.Web.ViewModels.Administration.Dashboard;
 
 namespace Novinichka.Web.Areas.Administration.Controllers

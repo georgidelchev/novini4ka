@@ -3,9 +3,10 @@ using System.Linq;
 
 using Novinichka.Data.Common.Repositories;
 using Novinichka.Data.Models;
+using Novinichka.Services.Data.Interfaces;
 using Novinichka.Services.Mapping;
 
-namespace Novinichka.Services.Data
+namespace Novinichka.Services.Data.Implementations
 {
     public class SettingsService : ISettingsService
     {

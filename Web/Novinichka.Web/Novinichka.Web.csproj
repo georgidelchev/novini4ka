@@ -14,6 +14,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Hangfire.AspNetCore" Version="1.7.25" />
+    <PackageReference Include="Hangfire.Console" Version="1.4.2" />
+    <PackageReference Include="HangFire.SqlServer" Version="1.7.25" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.11">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -33,6 +36,7 @@
     <ProjectReference Include="..\..\Novinichka.Common\Novinichka.Common.csproj" />
     <ProjectReference Include="..\..\Data\Novinichka.Data.Models\Novinichka.Data.Models.csproj" />
     <ProjectReference Include="..\..\Data\Novinichka.Data\Novinichka.Data.csproj" />
+    <ProjectReference Include="..\..\Novinichka.Services.CronJobs\Novinichka.Services.CronJobs.csproj" />
     <ProjectReference Include="..\..\Services\Novinichka.Services.Data\Novinichka.Services.Data.csproj" />
     <ProjectReference Include="..\..\Services\Novinichka.Services.Mapping\Novinichka.Services.Mapping.csproj" />
     <ProjectReference Include="..\..\Services\Novinichka.Services.Messaging\Novinichka.Services.Messaging.csproj" />

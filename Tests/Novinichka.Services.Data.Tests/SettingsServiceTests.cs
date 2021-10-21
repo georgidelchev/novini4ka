@@ -8,6 +8,7 @@ using Novinichka.Data;
 using Novinichka.Data.Common.Repositories;
 using Novinichka.Data.Models;
 using Novinichka.Data.Repositories;
+using Novinichka.Services.Data.Implementations;
 using Xunit;
 
 namespace Novinichka.Services.Data.Tests

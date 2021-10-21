@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26403.7
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31613.86
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web", "Web", "{E389DEB6-5F90-444B-A054-12A10D39C76F}"
 EndProject
@@ -37,7 +37,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Novinichka.Services.Data.Te
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Novinichka.Web.Tests", "Tests\Novinichka.Web.Tests\Novinichka.Web.Tests.csproj", "{3EE06C6E-C8F3-418A-A309-8AC81976A074}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Novinichka.Web.ViewModels", "Web\Novinichka.Web.ViewModels\Novinichka.Web.ViewModels.csproj", "{13B7AACB-9C85-4409-8D4B-95A67D0DFFF7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Novinichka.Web.ViewModels", "Web\Novinichka.Web.ViewModels\Novinichka.Web.ViewModels.csproj", "{13B7AACB-9C85-4409-8D4B-95A67D0DFFF7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Novinichka.Services.CronJobs", "Novinichka.Services.CronJobs\Novinichka.Services.CronJobs.csproj", "{CBCA0156-E968-4DD7-9323-87E7D7D17CA1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Novinichka.Services.NewsSources", "Novinichka.Services.NewsSources\Novinichka.Services.NewsSources.csproj", "{653A53D3-A240-4886-9FC3-45BCE5B33292}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -101,6 +105,14 @@ Global
 		{13B7AACB-9C85-4409-8D4B-95A67D0DFFF7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{13B7AACB-9C85-4409-8D4B-95A67D0DFFF7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{13B7AACB-9C85-4409-8D4B-95A67D0DFFF7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CBCA0156-E968-4DD7-9323-87E7D7D17CA1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CBCA0156-E968-4DD7-9323-87E7D7D17CA1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CBCA0156-E968-4DD7-9323-87E7D7D17CA1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CBCA0156-E968-4DD7-9323-87E7D7D17CA1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{653A53D3-A240-4886-9FC3-45BCE5B33292}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{653A53D3-A240-4886-9FC3-45BCE5B33292}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{653A53D3-A240-4886-9FC3-45BCE5B33292}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{653A53D3-A240-4886-9FC3-45BCE5B33292}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -119,6 +131,8 @@ Global
 		{901AB2DA-6E52-4FB2-91F0-58EB0115F2F7} = {7A731632-6714-44E2-A9E4-069EBA9E666C}
 		{3EE06C6E-C8F3-418A-A309-8AC81976A074} = {7A731632-6714-44E2-A9E4-069EBA9E666C}
 		{13B7AACB-9C85-4409-8D4B-95A67D0DFFF7} = {E389DEB6-5F90-444B-A054-12A10D39C76F}
+		{CBCA0156-E968-4DD7-9323-87E7D7D17CA1} = {516E002B-9E6E-4456-B7F6-EAA353966DE6}
+		{653A53D3-A240-4886-9FC3-45BCE5B33292} = {516E002B-9E6E-4456-B7F6-EAA353966DE6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {384484BE-4680-4529-9CC2-AD37BA4D12D1}

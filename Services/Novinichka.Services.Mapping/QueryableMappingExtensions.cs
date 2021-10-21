@@ -8,9 +8,7 @@ namespace Novinichka.Services.Mapping
 {
     public static class QueryableMappingExtensions
     {
-        public static IQueryable<TDestination> To<TDestination>(
-            this IQueryable source,
-            params Expression<Func<TDestination, object>>[] membersToExpand)
+        public static IQueryable<TDestination> To<TDestination>(this IQueryable source, params Expression<Func<TDestination, object>>[] membersToExpand)
         {
             if (source == null)
             {
@@ -20,9 +18,7 @@ namespace Novinichka.Services.Mapping
             return source.ProjectTo(AutoMapperConfig.MapperInstance.ConfigurationProvider, null, membersToExpand);
         }
 
-        public static IQueryable<TDestination> To<TDestination>(
-            this IQueryable source,
-            object parameters)
+        public static IQueryable<TDestination> To<TDestination>(this IQueryable source, object parameters)
         {
             if (source == null)
             {

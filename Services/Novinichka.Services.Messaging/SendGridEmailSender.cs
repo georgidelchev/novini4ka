@@ -27,6 +27,7 @@ namespace Novinichka.Services.Messaging
             var fromAddress = new EmailAddress(from, fromName);
             var toAddress = new EmailAddress(to);
             var message = MailHelper.CreateSingleEmail(fromAddress, toAddress, subject, null, htmlContent);
+
             if (attachments?.Any() == true)
             {
                 foreach (var attachment in attachments)
@@ -38,6 +39,7 @@ namespace Novinichka.Services.Messaging
             try
             {
                 var response = await this.client.SendEmailAsync(message);
+
                 Console.WriteLine(response.StatusCode);
                 Console.WriteLine(await response.Body.ReadAsStringAsync());
             }

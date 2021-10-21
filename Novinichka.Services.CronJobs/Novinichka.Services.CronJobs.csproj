@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Hangfire.Console" Version="1.4.2" />
+    <PackageReference Include="Hangfire.Core" Version="1.7.25" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Data\Novinichka.Data.Common\Novinichka.Data.Common.csproj" />
+    <ProjectReference Include="..\Data\Novinichka.Data.Models\Novinichka.Data.Models.csproj" />
+    <ProjectReference Include="..\Novinichka.Common\Novinichka.Common.csproj" />
+    <ProjectReference Include="..\Novinichka.Services.NewsSources\Novinichka.Services.NewsSources.csproj" />
+    <ProjectReference Include="..\Services\Novinichka.Services.Data\Novinichka.Services.Data.csproj" />
+  </ItemGroup>
+
+</Project>

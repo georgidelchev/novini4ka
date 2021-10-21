@@ -1,0 +1,146 @@
+﻿@model Novinichka.Web.ViewModels.Administration.Sources.CreateSourceInputModel
+
+@{
+    this.ViewData["Title"] = "Create Source";
+}
+
+<div class="text-center">
+    <h1>Hello, @User.Identity?.Name!</h1>
+</div>
+<hr />
+
+<form method="post" class="col-md-6 offset-md-3" enctype="multipart/form-data">
+    <h2>You can add news source from here!</h2>
+    <div asp-validation-summary="All" class="text-danger"></div>
+
+    <div>
+        <span asp-validation-for="TypeName" class="text-danger"></span>
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <label asp-for="TypeName" class="input-group-text">
+                    <i class="fas fa-keyboard"></i>
+                </label>
+            </div>
+            <input asp-for="TypeName" placeholder="Type name" class="form-control" />
+        </div>
+    </div>
+    <div>
+        <span asp-validation-for="ShortName" class="text-danger"></span>
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <label asp-for="ShortName" class="input-group-text">
+                    <i class="fas fa-file-signature"></i>
+                </label>
+            </div>
+            <input asp-for="ShortName" placeholder="Short name" class="form-control" />
+        </div>
+    </div>
+    <div>
+        <span asp-validation-for="FullName" class="text-danger"></span>
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <label asp-for="FullName" class="input-group-text">
+                    <i class="fas fa-file-signature"></i>
+                </label>
+            </div>
+            <input asp-for="FullName" placeholder="Full name" class="form-control" />
+        </div>
+    </div>
+    <div>
+        <span asp-validation-for="Description" class="text-danger"></span>
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <label asp-for="Description" class="input-group-text">
+                    <i class="fas fa-info-circle"></i>
+                </label>
+            </div>
+            <textarea asp-for="Description" rows="10" placeholder="Description" class="form-control"></textarea>
+        </div>
+    </div>
+    <div>
+        <span asp-validation-for="Url" class="text-danger"></span>
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <label asp-for="Url" class="input-group-text">
+                    <i class="fas fa-link"></i>
+                </label>
+            </div>
+            <input asp-for="Url" placeholder="Original Url" class="form-control" />
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="image mb-2" id="@("preview-picture" + "DefaultImage")">
+            <label for="DefaultImage" class="image-upload"></label>
+            <input type="file" asp-for="DefaultImage" id="DefaultImage" class="image-upload" />
+        </div>
+    </div>
+    <div class="text-center">
+        <input type="submit" class="btn btn-success" />
+    </div>
+</form>
+<hr />
+
+<script>
+    $(document).on('change', ".image-upload", function () {
+        let id = $(this).parent().attr('id');
+        console.log(id);
+        console.log(1);
+        var files = !!this.files ? this.files : [];
+        if (!files.length || !window.FileReader) return;
+        if (/^image/.test(files[0].type)) {
+            var ReaderObj = new FileReader();
+            ReaderObj.readAsDataURL(files[0]);
+            ReaderObj.onloadend = function () {
+                $("#" + id).css("background-image", "url(" + this.result + ")");
+            }
+        } else {
+            alert("Upload an image");
+        }
+    });
+</script>
+
+<style>
+    .image {
+        width: 150px;
+        height: 150px;
+        border-radius: 50px;
+        background-image: url("/img/upload-file-image.png");
+        background-repeat: no-repeat;
+        background-size: contain;
+        position: relative;
+    }
+
+    .image-preset {
+        width: 150px;
+        height: 150px;
+        background-repeat: no-repeat;
+        background-size: contain;
+        position: relative;
+    }
+
+    .image-upload {
+        opacity: 0;
+        z-index: 100;
+        width: 80px;
+        height: 150px;
+        position: absolute;
+    }
+
+        .image-upload:hover, .image-preset:hover, .image:hover {
+            cursor: pointer;
+        }
+
+    input[type='file'] {
+        display: none;
+    }
+
+    @@media(max-width: 980px) {
+        .image {
+            width: 100px;
+        }
+
+        .image-upload {
+            width: 100px;
+        }
+    }
+</style>

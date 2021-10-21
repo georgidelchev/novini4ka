@@ -13,6 +13,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="CloudinaryDotNet" Version="1.15.2" />
+    <PackageReference Include="SixLabors.ImageSharp" Version="1.0.4" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.312" PrivateAssets="all">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
@@ -21,6 +23,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Data\Novinichka.Data.Common\Novinichka.Data.Common.csproj" />
     <ProjectReference Include="..\..\Data\Novinichka.Data.Models\Novinichka.Data.Models.csproj" />
+    <ProjectReference Include="..\..\Web\Novinichka.Web.ViewModels\Novinichka.Web.ViewModels.csproj" />
     <ProjectReference Include="..\Novinichka.Services.Mapping\Novinichka.Services.Mapping.csproj" />
     <ProjectReference Include="..\Novinichka.Services\Novinichka.Services.csproj" />
   </ItemGroup>

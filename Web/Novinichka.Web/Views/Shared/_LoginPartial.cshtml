@@ -1,6 +1,7 @@
 ﻿@using Novinichka.Common
 @using Novinichka.Data.Models
 @using Microsoft.AspNetCore.Identity
+
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
 
@@ -14,6 +15,9 @@
         {
             <li class="nav-item">
                 <a class="nav-link text-dark" asp-area="Administration" asp-controller="Dashboard" asp-action="Index" title="Admin">Admin</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-dark" asp-area="Administration" asp-controller="Sources" asp-action="Create" title="Sources">Add Source</a>
             </li>
         }
         <li class="nav-item">

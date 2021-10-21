@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Reflection;
 
+using CloudinaryDotNet;
 using Hangfire;
 using Hangfire.Console;
 using Hangfire.Dashboard;
@@ -51,6 +52,13 @@ namespace Novinichka.Web
                 .AddRoles<ApplicationRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
+            var cloudinaryCredentials = new Account(
+                this.configuration["Cloudinary:CloudName"],
+                this.configuration["Cloudinary:ApiKey"],
+                this.configuration["Cloudinary:ApiSecret"]);
+
+            var cloudinaryUtility = new Cloudinary(cloudinaryCredentials);
+
             services.Configure<CookiePolicyOptions>(options =>
             {
                 options.CheckConsentNeeded = _ => true;
@@ -81,6 +89,7 @@ namespace Novinichka.Web
                     }).UseConsole());
 
             services.AddSingleton(this.configuration);
+            services.AddSingleton(cloudinaryUtility);
 
             // Data repositories
             services.AddScoped(typeof(IDeletableEntityRepository<>), typeof(EfDeletableEntityRepository<>));
@@ -91,6 +100,8 @@ namespace Novinichka.Web
             services.AddTransient<IEmailSender, NullMessageSender>();
             services.AddTransient<ISettingsService, SettingsService>();
             services.AddTransient<INewsService, NewsService>();
+            services.AddTransient<ISourcesService, SourcesService>();
+            services.AddTransient<ICloudinaryService, CloudinaryService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

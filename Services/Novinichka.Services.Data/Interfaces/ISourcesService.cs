@@ -11,6 +11,12 @@ namespace Novinichka.Services.Data.Interfaces
 
         Task<IEnumerable<T>> GetAll<T>();
 
+        Task Delete(int sourceId);
+
         bool IsExisting(string typeName);
+
+        bool IsExisting(int id);
+
+        public string GetName(int id);
     }
 }

@@ -60,5 +60,22 @@ namespace Novinichka.Web.Areas.Administration.Controllers
 
             return this.View(viewModel);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Delete(int id)
+        {
+            if (!this.sourcesService.IsExisting(id))
+            {
+                this.TempData["ErrorMessage"] = "This source is not existing!";
+            }
+            else
+            {
+                var sourceName = this.sourcesService.GetName(id);
+                this.TempData["SuccessMessage"] = $"Successfully deleted {sourceName} source.";
+                await this.sourcesService.Delete(id);
+            }
+
+            return this.RedirectToAction(nameof(this.All));
+        }
     }
 }

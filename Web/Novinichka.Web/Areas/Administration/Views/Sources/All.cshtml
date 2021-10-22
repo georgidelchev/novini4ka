@@ -4,6 +4,27 @@
     this.ViewData["Title"] = "All Sources";
 }
 
+@if (this.TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <strong>Warning:</strong> @this.TempData["ErrorMessage"]
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+}
+else if(this.TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>Success:</strong> @this.TempData["SuccessMessage"]
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+}
+
+<partial name="_PagingPartial" />
+
 <table class="table table-bordered table-sm table-hover text-center">
     <thead>
         <tr>
@@ -18,12 +39,17 @@
         @foreach (var source in this.Model.Sources)
         {
             <tr>
-                <td><a href="@source.Url" target="_blank"><img src="@source.SmallBannerUrl" width="40" height="40" /></a></td>
+                <td><a href="@source.Url" target="_blank"><img src="@source.SmallBannerUrl" width="30" height="30" /></a></td>
                 <td>@source.ShortTypeName</td>
                 <td>@source.ShortName - @source.Name</td>
                 <td>@source.ShortDescription</td>
-                <td><a href=""><i class="fas fa-times text-danger"></i></a></td>
+                <td>
+                    <a asp-controller="Sources" asp-action="Delete" asp-route-id="@source.Id"><i class="fas fa-times text-danger"></i></a>
+                    <a asp-controller="Sources" asp-action="Delete" asp-route-id="123"><i class="fas fa-times text-danger"></i></a>
+                </td>
             </tr>
         }
     </tbody>
 </table>
+
+<partial name="_PagingPartial" />

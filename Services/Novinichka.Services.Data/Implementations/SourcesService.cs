@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -53,16 +54,38 @@ namespace Novinichka.Services.Data.Implementations
         }
 
         public async Task<IEnumerable<T>> GetAll<T>()
-        {
-            var sources = await this.sourcesRepository
+            => await this.sourcesRepository
                 .All()
                 .To<T>()
                 .ToListAsync();
 
-            return sources;
+        public async Task Delete(int sourceId)
+        {
+            var source = this.sourcesRepository
+                .All()
+                .FirstOrDefault(s => s.Id == sourceId);
+
+            source.IsDeleted = true;
+            source.DeletedOn = DateTime.UtcNow;
+
+            await this.sourcesRepository.SaveChangesAsync();
         }
 
         public bool IsExisting(string typeName)
-            => this.sourcesRepository.AllWithDeleted().Any(s => s.TypeName == typeName);
+            => this.sourcesRepository
+                .AllWithDeleted()
+                .Any(s => s.TypeName == typeName);
+
+        public bool IsExisting(int id)
+            => this.sourcesRepository
+                .AllWithDeleted()
+                .Any(s => s.Id == id);
+
+        public string GetName(int id)
+            => this.sourcesRepository
+                .All()
+                .Where(s => s.Id == id)
+                .Select(s => s.ShortName + " " + s.Name)
+                .FirstOrDefault();
     }
 }

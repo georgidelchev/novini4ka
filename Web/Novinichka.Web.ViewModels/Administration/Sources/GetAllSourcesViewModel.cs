@@ -5,6 +5,8 @@ namespace Novinichka.Web.ViewModels.Administration.Sources
 {
     public class GetAllSourcesViewModel : IMapFrom<Source>
     {
+        public int Id { get; set; }
+
         public string TypeName { get; set; }
 
         public string ShortTypeName

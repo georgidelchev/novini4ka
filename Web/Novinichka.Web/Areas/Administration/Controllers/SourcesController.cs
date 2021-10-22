@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Mvc;
 using Novinichka.Services.Data.Interfaces;
@@ -42,6 +43,22 @@ namespace Novinichka.Web.Areas.Administration.Controllers
             await this.sourcesService.CreateAsync(inputModel);
 
             return this.Redirect("/");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> All(int id = 1)
+        {
+            var sources = await this.sourcesService
+                .GetAll<GetAllSourcesViewModel>();
+            var viewModel = new ListAllSourcesViewModel()
+            {
+                ItemsPerPage = 12,
+                PageNumber = id,
+                Sources = sources,
+                ItemsCount = sources.Count(),
+            };
+
+            return this.View(viewModel);
         }
     }
 }

@@ -1,0 +1,29 @@
+﻿@model Novinichka.Web.ViewModels.Administration.Sources.ListAllSourcesViewModel
+
+@{
+    this.ViewData["Title"] = "All Sources";
+}
+
+<table class="table table-bordered table-sm table-hover text-center">
+    <thead>
+        <tr>
+            <th scope="col">Image</th>
+            <th scope="col">Type name</th>
+            <th scope="col">Name</th>
+            <th scope="col">Description</th>
+            <th scope="col">Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var source in this.Model.Sources)
+        {
+            <tr>
+                <td><a href="@source.Url" target="_blank"><img src="@source.SmallBannerUrl" width="40" height="40" /></a></td>
+                <td>@source.ShortTypeName</td>
+                <td>@source.ShortName - @source.Name</td>
+                <td>@source.ShortDescription</td>
+                <td><a href=""><i class="fas fa-times text-danger"></i></a></td>
+            </tr>
+        }
+    </tbody>
+</table>

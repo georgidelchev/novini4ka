@@ -1,10 +1,12 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-
+using Microsoft.EntityFrameworkCore;
 using Novinichka.Data.Common.Repositories;
 using Novinichka.Data.Models;
 using Novinichka.Services.Data.Interfaces;
+using Novinichka.Services.Mapping;
 using Novinichka.Web.ViewModels.Administration.Sources;
 
 namespace Novinichka.Services.Data.Implementations
@@ -29,15 +31,16 @@ namespace Novinichka.Services.Data.Implementations
             await inputModel.DefaultImage.CopyToAsync(ms);
             var destinationData = ms.ToArray();
 
-            var defaultImage = await this.cloudinaryService
-                .UploadPictureAsync(destinationData, $"{inputModel.ShortName}", "SourcesDefaultImages", 100, 80, "scale");
+            var smallBannerUrl = await this.cloudinaryService
+                .UploadPictureAsync(destinationData, $"{inputModel.ShortName}_Small", "SourcesDefaultImages", 100, 80, "scale");
 
-            //var bigBannerUrl = await this.cloudinaryService
-            //    .UploadPictureAsync(destinationData, $"{inputModel.ShortName}_Big", "SourcesBanners", 730, 500, "fit");
+            var bigBannerUrl = await this.cloudinaryService
+                .UploadPictureAsync(destinationData, $"{inputModel.ShortName}_Big", "SourcesBanners", 730, 500, "fit");
 
             var source = new Source
             {
-                DefaultImageUrl = defaultImage,
+                SmallBannerUrl = smallBannerUrl,
+                BigBannerUrl = bigBannerUrl,
                 Description = inputModel.Description,
                 Name = inputModel.FullName,
                 ShortName = inputModel.ShortName,
@@ -47,6 +50,16 @@ namespace Novinichka.Services.Data.Implementations
 
             await this.sourcesRepository.AddAsync(source);
             await this.sourcesRepository.SaveChangesAsync();
+        }
+
+        public async Task<IEnumerable<T>> GetAll<T>()
+        {
+            var sources = await this.sourcesRepository
+                .All()
+                .To<T>()
+                .ToListAsync();
+
+            return sources;
         }
 
         public bool IsExisting(string typeName)

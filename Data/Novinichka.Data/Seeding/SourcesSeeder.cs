@@ -47,7 +47,7 @@ namespace Novinichka.Data.Seeding
                         Name = source.Name,
                         Description = source.Description,
                         Url = source.Url,
-                        DefaultImageUrl = source.DefaultImageUrl,
+                        SmallBannerUrl = source.DefaultImageUrl,
                     };
 
                     await dbContext.Sources.AddAsync(sourceToAdd);
@@ -58,7 +58,7 @@ namespace Novinichka.Data.Seeding
                     dbSource.Name = source.Name;
                     dbSource.Description = source.Description;
                     dbSource.Url = source.Url;
-                    dbSource.DefaultImageUrl = source.DefaultImageUrl;
+                    dbSource.SmallBannerUrl = source.DefaultImageUrl;
                 }
             }
         }

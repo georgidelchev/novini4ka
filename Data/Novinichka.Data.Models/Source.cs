@@ -16,11 +16,9 @@ namespace Novinichka.Data.Models
 
         public string Url { get; set; }
 
-        //public string SmallBannerUrl { get; set; }
+        public string SmallBannerUrl { get; set; }
 
-        //public string BigBannerUrl { get; set; }
-
-        public string DefaultImageUrl { get; set; }
+        public string BigBannerUrl { get; set; }
 
         public virtual ICollection<News> News { get; set; }
             = new HashSet<News>();

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Hangfire;
 using Microsoft.EntityFrameworkCore;
 using Novinichka.Data.Common.Repositories;
 using Novinichka.Data.Models;
@@ -16,13 +17,16 @@ namespace Novinichka.Services.Data.Implementations
     {
         private readonly IDeletableEntityRepository<Source> sourcesRepository;
         private readonly ICloudinaryService cloudinaryService;
+        private readonly IRecurringJobManager recurringJobManager;
 
         public SourcesService(
             IDeletableEntityRepository<Source> sourcesRepository,
-            ICloudinaryService cloudinaryService)
+            ICloudinaryService cloudinaryService,
+            IRecurringJobManager recurringJobManager)
         {
             this.sourcesRepository = sourcesRepository;
             this.cloudinaryService = cloudinaryService;
+            this.recurringJobManager = recurringJobManager;
         }
 
         public async Task CreateAsync(CreateSourceInputModel inputModel)
@@ -69,6 +73,8 @@ namespace Novinichka.Services.Data.Implementations
             source.DeletedOn = DateTime.UtcNow;
 
             await this.sourcesRepository.SaveChangesAsync();
+
+            this.recurringJobManager.RemoveIfExists($"GetRecentNewsCJ-{source.ShortName}");
         }
 
         public bool IsExisting(string typeName)

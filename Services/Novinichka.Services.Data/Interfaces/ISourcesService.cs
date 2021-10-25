@@ -9,7 +9,7 @@ namespace Novinichka.Services.Data.Interfaces
     {
         Task CreateAsync(CreateSourceInputModel inputModel);
 
-        Task<IEnumerable<T>> GetAll<T>();
+        Task<IEnumerable<T>> GetAllWithDeleted<T>();
 
         Task Delete(int sourceId);
 

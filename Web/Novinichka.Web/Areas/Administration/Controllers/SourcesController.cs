@@ -49,7 +49,7 @@ namespace Novinichka.Web.Areas.Administration.Controllers
         public async Task<IActionResult> All(int id = 1)
         {
             var sources = await this.sourcesService
-                .GetAll<GetAllSourcesViewModel>();
+                .GetAllWithDeleted<GetAllSourcesViewModel>();
             var viewModel = new ListAllSourcesViewModel()
             {
                 ItemsPerPage = 12,

@@ -24,5 +24,7 @@ namespace Novinichka.Web.ViewModels.Administration.Sources
         public string Url { get; set; }
 
         public string SmallBannerUrl { get; set; }
+
+        public bool IsDeleted { get; set; }
     }
 }

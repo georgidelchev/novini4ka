@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+
 using Hangfire;
 using Microsoft.EntityFrameworkCore;
 using Novinichka.Data.Common.Repositories;
@@ -57,9 +58,9 @@ namespace Novinichka.Services.Data.Implementations
             await this.sourcesRepository.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<T>> GetAll<T>()
+        public async Task<IEnumerable<T>> GetAllWithDeleted<T>()
             => await this.sourcesRepository
-                .All()
+                .AllWithDeleted()
                 .To<T>()
                 .ToListAsync();
 

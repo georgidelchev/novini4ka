@@ -1,9 +1,12 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
+using Microsoft.EntityFrameworkCore;
 using Novinichka.Data.Common.Repositories;
 using Novinichka.Data.Models;
 using Novinichka.Services.Data.Interfaces;
+using Novinichka.Services.Mapping;
 
 namespace Novinichka.Services.Data.Implementations
 {
@@ -39,6 +42,18 @@ namespace Novinichka.Services.Data.Implementations
             await this.newsRepository.SaveChangesAsync();
 
             return news.Id;
+        }
+
+        public async Task<IEnumerable<T>> GetAll<T>()
+        {
+            var news = await this.newsRepository
+                .All()
+                .Include(n => n.Source)
+                .OrderByDescending(n => n.CreatedOn)
+                .To<T>()
+                .ToListAsync();
+
+            return news;
         }
     }
 }

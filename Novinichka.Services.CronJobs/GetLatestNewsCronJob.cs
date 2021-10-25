@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Hangfire;
@@ -8,7 +7,6 @@ using Hangfire.Server;
 using Novinichka.Common;
 using Novinichka.Data.Common.Repositories;
 using Novinichka.Data.Models;
-using Novinichka.Services.Data;
 using Novinichka.Services.Data.Interfaces;
 using Novinichka.Services.NewsSources;
 

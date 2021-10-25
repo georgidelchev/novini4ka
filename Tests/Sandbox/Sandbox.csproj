@@ -30,6 +30,7 @@
     <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.312" PrivateAssets="all">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
+	  <PackageReference Include="AngleSharp" Version="0.16.1" />
   </ItemGroup>
 
   <ItemGroup>

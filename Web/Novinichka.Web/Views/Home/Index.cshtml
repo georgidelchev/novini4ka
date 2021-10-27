@@ -9,6 +9,7 @@
 </div>
 
 <partial name="_PagingPartial" model="@this.Model" />
+
 @foreach (var news in this.Model.News)
 {
     <article class="clearfix">
@@ -21,7 +22,7 @@
             </h3>
             <div class="media">
                 <a class="d-flex mr-2">
-                    <img class="rounded" src="@news.ImageUrl" width="100" height="60" alt="@news.SourceShortName" title="@news.Title">
+                    <img class="rounded" src="@news.SmallImageUrl" width="100" height="60" alt="@news.SourceShortName" title="@news.Title">
                 </a>
                 <p class="text-justify mb-2">
                     @news.ShortContent

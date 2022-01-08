@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 
 using Microsoft.EntityFrameworkCore;
@@ -13,29 +14,45 @@ namespace Novinichka.Services.Data.Implementations
     public class NewsService : INewsService
     {
         private readonly IDeletableEntityRepository<News> newsRepository;
+        private readonly ICloudinaryService cloudinaryService;
+        private readonly ISourcesService sourcesService;
 
-        public NewsService(IDeletableEntityRepository<News> newsRepository)
+        public NewsService(
+            IDeletableEntityRepository<News> newsRepository,
+            ICloudinaryService cloudinaryService,
+            ISourcesService sourcesService)
         {
             this.newsRepository = newsRepository;
+            this.cloudinaryService = cloudinaryService;
+            this.sourcesService = sourcesService;
         }
 
         public async Task<int?> AddAsync(NewsModel model, int sourceId)
         {
-            if (this.newsRepository
-                .AllWithDeleted().Any(x => x.SourceId == sourceId && x.OriginalSourceId == model.OriginalSourceId))
+            if (this.IsExisting(sourceId, model.OriginalSourceId))
             {
                 return null;
             }
 
-            var news = new News()
+            var imageUrl = this.sourcesService.GetBigImageUrl(sourceId);
+
+            if (model.ImageUrl != null)
+            {
+                var imageBytes = new WebClient().DownloadData(model.ImageUrl);
+
+                imageUrl = await this.cloudinaryService
+                    .UploadPictureAsync(imageBytes, $"{model.Title}_Big", "NewsImages", 730, 500, "fit");
+            }
+
+            var news = new News
             {
                 Title = model.Title,
                 Content = model.Content,
                 CreatedOn = model.CreatedOn,
-                ImageUrl = model.ImageUrl,
                 OriginalUrl = model.OriginalUrl,
                 SourceId = sourceId,
                 OriginalSourceId = model.OriginalSourceId,
+                ImageUrl = imageUrl,
             };
 
             await this.newsRepository.AddAsync(news);
@@ -45,15 +62,30 @@ namespace Novinichka.Services.Data.Implementations
         }
 
         public async Task<IEnumerable<T>> GetAll<T>()
-        {
-            var news = await this.newsRepository
-                .All()
+            => await this.newsRepository
+                .AllWithDeleted()
                 .Include(n => n.Source)
                 .OrderByDescending(n => n.CreatedOn)
                 .To<T>()
                 .ToListAsync();
 
-            return news;
-        }
+        public async Task<T> GetDetails<T>(int newsId)
+            => await this.newsRepository
+                .All()
+                .Where(n => n.Id == newsId)
+                .Include(n => n.Source)
+                .To<T>()
+                .FirstOrDefaultAsync();
+
+        public bool IsExisting(int sourceId, string originalSourceId)
+            => this.newsRepository
+                .AllWithDeleted()
+                .Any(n => n.SourceId == sourceId &&
+                          n.OriginalSourceId == originalSourceId);
+
+        public bool IsExisting(int newsId)
+            => this.newsRepository
+                .AllWithDeleted()
+                .Any(n => n.Id == newsId);
     }
 }

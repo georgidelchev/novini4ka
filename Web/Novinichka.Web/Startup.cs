@@ -146,7 +146,7 @@ namespace Novinichka.Web
 
             if (env.IsDevelopment())
             {
-                _ = app.UseHangfireServer(new BackgroundJobServerOptions { WorkerCount = 2 });
+                _ = app.UseHangfireServer(new BackgroundJobServerOptions { WorkerCount = 20 });
                 app.UseHangfireDashboard("/hangfire", new DashboardOptions { Authorization = new[] { new HangfireAuthFilter() } });
             }
 
@@ -168,16 +168,19 @@ namespace Novinichka.Web
             foreach (var source in sources)
             {
                 recurringJobManager.AddOrUpdate<GetLatestNewsCronJob>(
-                    $"GetRecentNewsCJ-{source.ShortName}",
+                    $"{source.ShortName}",
                     x => x.StartWorking(source.TypeName, null),
-                    "* * * * *");
+                    "*/5 * * * *");
             }
         }
 
         private class HangfireAuthFilter : IDashboardAuthorizationFilter
         {
             public bool Authorize(DashboardContext dashboardContext)
-                => dashboardContext.GetHttpContext().User.IsInRole(GlobalConstants.AdministratorRoleName);
+                => dashboardContext
+                    .GetHttpContext()
+                    .User
+                    .IsInRole(GlobalConstants.AdministratorRoleName);
         }
     }
 }

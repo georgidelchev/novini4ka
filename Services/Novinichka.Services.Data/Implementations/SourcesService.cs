@@ -38,10 +38,10 @@ namespace Novinichka.Services.Data.Implementations
             var destinationData = ms.ToArray();
 
             var smallBannerUrl = await this.cloudinaryService
-                .UploadPictureAsync(destinationData, $"{inputModel.ShortName}_Small", "SourcesDefaultImages", 100, 80, "scale");
+                .UploadPictureAsync(destinationData, $"{inputModel.ShortName}_Small", "SourcesImages", 100, 80, "scale");
 
             var bigBannerUrl = await this.cloudinaryService
-                .UploadPictureAsync(destinationData, $"{inputModel.ShortName}_Big", "SourcesBanners", 730, 500, "fit");
+                .UploadPictureAsync(destinationData, $"{inputModel.ShortName}_Big", "SourcesImages", 730, 500, "fit");
 
             var source = new Source
             {
@@ -70,12 +70,15 @@ namespace Novinichka.Services.Data.Implementations
                 .All()
                 .FirstOrDefault(s => s.Id == sourceId);
 
-            source.IsDeleted = true;
-            source.DeletedOn = DateTime.UtcNow;
+            if (source != null)
+            {
+                source.IsDeleted = true;
+                source.DeletedOn = DateTime.UtcNow;
 
-            await this.sourcesRepository.SaveChangesAsync();
+                await this.sourcesRepository.SaveChangesAsync();
 
-            this.recurringJobManager.RemoveIfExists($"GetRecentNewsCJ-{source.ShortName}");
+                this.recurringJobManager.RemoveIfExists($"GetRecentNewsCJ-{source.ShortName}");
+            }
         }
 
         public bool IsExisting(string typeName)
@@ -94,5 +97,11 @@ namespace Novinichka.Services.Data.Implementations
                 .Where(s => s.Id == id)
                 .Select(s => s.ShortName + " " + s.Name)
                 .FirstOrDefault();
+
+        public string GetBigImageUrl(int sourceId)
+            => this.sourcesRepository
+                .AllWithDeleted()
+                .FirstOrDefault(s => s.Id == sourceId)
+                ?.BigBannerUrl;
     }
 }

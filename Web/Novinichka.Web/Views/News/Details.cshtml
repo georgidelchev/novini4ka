@@ -1,0 +1,92 @@
+﻿@using Novinichka.Common
+
+@model Novinichka.Web.ViewModels.News.NewsViewModel
+
+<div class="text-center">
+    <h1>@this.ViewData["Title"]</h1>
+</div>
+
+<form method="get" asp-controller="Ads" asp-action="Delete" id="deleteForm" asp-route-id="@Model.Id">
+</form>
+
+<div class="row">
+    <div class="col-md-9">
+        <div class="card">
+            <div>
+                <small><i class="fas fa-eye text-primary"></i> 10</small>
+                @if (this.User.IsInRole(GlobalConstants.AdministratorRoleName))
+                {
+                    <small>
+                        <a asp-controller="Ads" asp-action="Edit" asp-route-id="@Model.Id"><i class="fas fa-edit text-warning ml-3"></i></a>
+                    </small>
+                    <small>
+                        <a data-toggle="modal" data-target="#deleteModal" style="cursor: pointer;">
+                            <i class="fas fa-times text-danger ml-3"></i>
+                        </a>
+                    </small>
+                }
+            </div>
+            <div class="text-center">
+                <h3 class="text-primary  font-weight-normal">@this.Model.Title<br /></h3>
+                <img src="@this.Model.ImageUrl" />
+                <hr />
+                <h6>
+                    @*<span class="float-left font-weight-normal pl-2">
+                            <a class="text-danger font-weight-bolder" asp-controller="Wishlists" asp-action="AddToWishlist" asp-route-adId="@Model.Id" asp-route-redirectUrl="/Ads/Details?id=@Model.Id">
+                                <i class="fas fa-heart" style="font-size: 2rem;"></i><br />
+                            </a>
+                            <a class="text-danger font-weight-bolder" asp-controller="Wishlists" asp-action="RemoveFromWishlist" asp-route-id="@Model.Id" asp-route-redirectUrl="/Ads/Details?id=@Model.Id">
+                                <i class="fas fa-times" style="font-size: 2rem;"></i><br />
+                            </a>
+                        </span>*@
+                    <span class="float-left font-weight-normal pl-5">
+                        <a class="text-warning font-italic font-weight-bolder" href="@this.Model.SourceUrl" target="_blank">
+                            <i class="fas fa-globe"></i><br />@this.Model.SourceShortName
+                        </a>
+                    </span>
+                    <span class="float-left font-weight-normal pl-5">
+                        <a class="text-warning font-italic font-weight-bolder" href="@this.Model.OriginalUrl" target="_blank">
+                            <i class="far fa-newspaper"></i><br />Статия
+                        </a>
+                    </span>
+                    <span class="float-left font-weight-normal pl-5 text-info font-weight-bolder">
+                        <i class="fas fa-calendar-alt"></i><br /><time>@this.Model.CreatedOnAsString</time>
+                    </span>
+                </h6>
+            </div>
+            <hr />
+            <div>
+                @this.Html.Raw(this.Model.Content)
+            </div>
+        </div>
+    </div>
+    @*<div class="col-md-3">
+            <div class="bg-primary font-weight-bolder">
+                <h1 class="text-white text-center"><i class="fas fa-tag"></i> Model.Price $</h1>
+            </div>
+            <div class="bg-primary font-weight-bolder">
+                <h2 class="text-white text-center"><i class="fas fa-mobile-alt"></i> Model.AddedByUserPhoneNumber</h2>
+            </div>
+            <div class="card-deck">
+                <div class="card">
+                    <img class="card-img-top" src="Model.AddedByUserAvatarImageUrl" alt="Card image cap">
+                    <div class="card-body text-center">
+                        <a asp-controller="Users" asp-action="Profile" asp-route-id="Model.AddedByUserId">Model.AddedByUserUsername</a>
+                        <p class="card-text text-center"><small class="text-muted">In AYN Since: Model.AddedByUserCreatedOnAsString</small></p>
+                        <hr />
+                        <div class="text-center">
+                            <a href="" class="text-primary text-center">Model.ActiveAdsCount active ads</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br />
+            <br />
+            <div class="text-center font-weight-bold">
+                <a asp-controller="Reports" asp-action="Create" asp-route-id="@this.Model.Id" asp-route-reportedUser="this.Model.AddedByUserId" class="text-danger text-center">
+                    <i class="fas fa-flag"></i> Issues?
+                </a>
+            </div>
+            <br />
+        </div>*@
+</div>

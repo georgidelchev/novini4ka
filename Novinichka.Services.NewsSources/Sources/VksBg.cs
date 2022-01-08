@@ -26,15 +26,26 @@ namespace Novinichka.Services.NewsSources.Sources
 
         public override IEnumerable<NewsModel> GetAllNews()
         {
-                var news = GetNewsUrls($"{this.BaseUrl}{Url}")
+            var counter = 1;
+            IEnumerable<NewsModel> news = null;
+
+            try
+            {
+                news = GetNewsUrls($"{this.BaseUrl}{Url}")
                     .Select(this.GetNews)
                     .Where(x => x != null)
                     .ToList();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
 
-                foreach (var element in news)
-                {
-                    yield return element;
-                }
+            foreach (var element in news)
+            {
+                Console.WriteLine($"{counter++} => {element.OriginalUrl}");
+                yield return element;
+            }
         }
 
         private IEnumerable<string> GetNewsUrls(string url)
@@ -45,10 +56,10 @@ namespace Novinichka.Services.NewsSources.Sources
 
             var document = this.Parser
                 .ParseDocument(html);
-            
+
             return document
                 .QuerySelectorAll(AnchorTagSelector)
-                .Select(x => $"{this.BaseUrl}{x?.Attributes["href"]?.Value.Substring(1, x.Attributes["href"].Value.Length-1)}")
+                .Select(x => $"{this.BaseUrl}{x?.Attributes["href"]?.Value.Substring(1, x.Attributes["href"].Value.Length - 1)}")
                 .ToList();
         }
 
@@ -59,9 +70,19 @@ namespace Novinichka.Services.NewsSources.Sources
                 ?.InnerHtml
                 .Trim();
 
+            if (string.IsNullOrWhiteSpace(newsTitle))
+            {
+                return null;
+            }
+
             var createdOnAsString = document
                 .QuerySelector("time")
                 ?.TextContent;
+
+            if (createdOnAsString is null)
+            {
+                return null;
+            }
 
             var createdOn = DateTime.ParseExact(createdOnAsString, "dd.MM.yyyy", CultureInfo.InvariantCulture);
 
@@ -76,7 +97,7 @@ namespace Novinichka.Services.NewsSources.Sources
 
             var originalSourceId = this.GetOriginalIdFromSourceUrl(url);
 
-            return new NewsModel(newsTitle, sb.ToString(), createdOn, "NoImage", url, originalSourceId);
+            return new NewsModel(newsTitle, sb.ToString(), createdOn, null, url, originalSourceId);
         }
 
         public override string GetOriginalIdFromSourceUrl(string url)

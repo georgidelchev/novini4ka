@@ -34,29 +34,23 @@ namespace Novinichka.Services.CronJobs
 
             if (source == null)
             {
-                throw new Exception("Source type not found in the database");
+                throw new Exception($"Source {typeName} has not found in the database!");
             }
 
-            var instance = ReflectionHelpers.GetInstance<BaseSource>(typeName);
+            var instance = ReflectionHelpers
+                .GetInstance<BaseSource>(typeName);
 
             var news = instance
                 .GetRecentNews()
                 .ToList();
-            var bar = context.WriteProgressBar();
 
-            foreach (var currentNews in news.WithProgress(bar))
+            foreach (var currentNews in news.WithProgress(context.WriteProgressBar()))
             {
                 var newsId = await this.newsService.AddAsync(currentNews, source.Id);
 
                 if (newsId.HasValue && currentNews != null)
                 {
                     context.WriteLine($"[ID:{newsId}] Successfully imported news with title: {currentNews.Title}");
-
-                    //await this.newsService.SaveImageLocallyAsync(
-                    //    remoteNews.ImageUrl,
-                    //    newsId.Value,
-                    //    this.webHostEnvironment.WebRootPath,
-                    //    instance.UseProxy);
                 }
             }
         }

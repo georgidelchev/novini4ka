@@ -30,12 +30,22 @@ namespace Novinichka.Services.NewsSources.Sources
 
         public override IEnumerable<NewsModel> GetAllNews()
         {
+            IEnumerable<NewsModel> news;
+
             for (var i = StartYear; i <= this.endYear; i++)
             {
-                var news = GetNewsUrls($"{this.BaseUrl}{Url}{UrlPaginationFragment}{i}")
-                    .Select(this.GetNews)
-                    .Where(x => x != null)
-                    .ToList();
+                try
+                {
+                    news = GetNewsUrls($"{this.BaseUrl}{Url}{UrlPaginationFragment}{i}")
+                       .Select(this.GetNews)
+                       .Where(x => x != null)
+                       .ToList();
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                    continue;
+                }
 
                 foreach (var element in news)
                 {
@@ -61,20 +71,25 @@ namespace Novinichka.Services.NewsSources.Sources
 
         protected override NewsModel ParseDocument(IDocument document, string url)
         {
-            var content = document.QuerySelector("#main");
-            content.RemoveChildNodes(content?.QuerySelector("p"));
+            var contentElement = document.QuerySelector("#main");
+            contentElement.RemoveChildNodes(contentElement?.QuerySelector("p"));
 
-            var createdOnAsString = content?.QuerySelector("p")?.TextContent.Trim();
-            if (!DateTime.TryParseExact(createdOnAsString, "d MMMM yyyy г.", new CultureInfo("bg-BG"), DateTimeStyles.None, out var createdOn))
+            var createdOnAsString = contentElement?
+                .QuerySelector("p")
+                ?.TextContent
+                .Trim();
+
+            if (createdOnAsString is null)
             {
                 return null;
             }
 
-            content.RemoveChildNodes(content.QuerySelector("p"));
-            content.RemoveComments();
-            content.RemoveGivenTag("comment");
+            var createdOn = DateTime.ParseExact(createdOnAsString, "d MMMM yyyy г.", new CultureInfo("bg-BG"));
 
-            var newsTitle = content
+            contentElement.RemoveChildNodes(contentElement.QuerySelector("p"));
+            var content = contentElement.InnerHtml.Trim();
+
+            var newsTitle = contentElement
                 .QuerySelector("p")
                 ?.TextContent
                 .Replace('\n', ' ')
@@ -84,14 +99,14 @@ namespace Novinichka.Services.NewsSources.Sources
                 .TrimEnd('.')
                 .Trim();
 
-            if (newsTitle != null && newsTitle.Length > 500)
+            if (newsTitle != null && newsTitle.Length > 350)
             {
                 newsTitle = "ПРЕССЪОБЩЕНИЕ";
             }
 
             var originalSourceId = this.GetOriginalIdFromSourceUrl(url);
 
-            return new NewsModel(newsTitle, content.InnerHtml.Trim(), createdOn, "NoImage", url, originalSourceId);
+            return new NewsModel(newsTitle, content, createdOn, null, url, originalSourceId);
         }
     }
 }

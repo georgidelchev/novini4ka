@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 using Novinichka.Web.ViewModels.Administration.Sources;
@@ -17,6 +18,8 @@ namespace Novinichka.Services.Data.Interfaces
 
         bool IsExisting(int id);
 
-        public string GetName(int id);
+        string GetName(int id);
+
+        string GetBigImageUrl(int sourceId);
     }
 }

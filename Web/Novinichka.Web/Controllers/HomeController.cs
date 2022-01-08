@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+
 using Microsoft.AspNetCore.Mvc;
 using Novinichka.Services.Data.Interfaces;
 using Novinichka.Web.ViewModels;
@@ -20,7 +21,7 @@ namespace Novinichka.Web.Controllers
 
         public async Task<IActionResult> Index(int id = 1)
         {
-            var news = await this.newsService.GetAll<GetNewsViewModel>();
+            var news = await this.newsService.GetAll<ShortNewsViewModel>();
 
             var viewModel = new ListAllNewsViewModel()
             {

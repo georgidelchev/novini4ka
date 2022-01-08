@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 using Novinichka.Data.Common.Models;
 
@@ -23,7 +24,6 @@ namespace Novinichka.Data.Models
         [Required]
         public string OriginalSourceId { get; set; }
 
-        [Required]
         public string ImageUrl { get; set; }
     }
 }

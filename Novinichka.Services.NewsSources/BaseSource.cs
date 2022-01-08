@@ -115,10 +115,11 @@ namespace Novinichka.Services.NewsSources
                 news.ImageUrl = this.RebuildGivenUrl(news.ImageUrl)?.Trim();
             }
 
-            news.OriginalSourceId = this.GetOriginalIdFromSourceUrl(url)?.Trim();
+            news.OriginalSourceId = news.OriginalSourceId;
 
             return news;
         }
+
         private string RebuildGivenUrl(string url)
         {
             if (string.IsNullOrWhiteSpace(url))

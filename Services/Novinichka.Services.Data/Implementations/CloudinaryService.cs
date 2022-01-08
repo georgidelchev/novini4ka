@@ -5,9 +5,6 @@ using System.Threading.Tasks;
 using CloudinaryDotNet;
 using CloudinaryDotNet.Actions;
 using Novinichka.Services.Data.Interfaces;
-using SixLabors.ImageSharp;
-using SixLabors.ImageSharp.Formats.Png;
-using SixLabors.ImageSharp.Processing;
 
 namespace Novinichka.Services.Data.Implementations
 {
@@ -34,22 +31,17 @@ namespace Novinichka.Services.Data.Implementations
 
             UploadResult uploadResult = this.cloudinaryUtility.Upload(uploadParams);
 
-            if (uploadResult.Error is not null)
-            {
-                throw new InvalidOperationException("Error occurred.");
-            }
-
-            return uploadResult?.SecureUri.AbsoluteUri;
+            return uploadResult.Error is not null ? null : uploadResult?.SecureUri.AbsoluteUri;
         }
 
         private static ImageUploadParams UploadImageParams(string fileName, string folderName, MemoryStream ms, Transformation transformation)
-            => new ImageUploadParams
+            => new()
             {
                 Folder = folderName,
                 File = new FileDescription(fileName, ms),
-                AllowedFormats = new[] { "jpg", "png", "jfif", "exif", "gif", "bmp", "ppm", "pgm", "pbm", "pnm", "heif", "bat" },
+                AllowedFormats = new[]
+                    {"jpg", "png", "jfif", "exif", "gif", "bmp", "ppm", "pgm", "pbm", "pnm", "heif", "bat"},
                 Format = "jpg",
-                Overwrite = true,
                 Transformation = transformation,
             };
     }

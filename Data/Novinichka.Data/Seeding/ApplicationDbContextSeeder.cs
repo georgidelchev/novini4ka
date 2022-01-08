@@ -29,7 +29,6 @@ namespace Novinichka.Data.Seeding
             {
                 new RolesSeeder(),
                 new SettingsSeeder(),
-                new SourcesSeeder(),
             };
 
             foreach (var seeder in seeders)

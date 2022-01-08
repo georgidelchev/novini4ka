@@ -4,6 +4,6 @@ namespace Novinichka.Web.ViewModels.News
 {
     public class ListAllNewsViewModel : PagingViewModel
     {
-        public IEnumerable<GetNewsViewModel> News { get; set; }
+        public IEnumerable<ShortNewsViewModel> News { get; set; }
     }
 }

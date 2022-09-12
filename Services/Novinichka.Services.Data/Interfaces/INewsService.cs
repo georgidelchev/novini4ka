@@ -13,6 +13,6 @@ namespace Novinichka.Services.Data.Interfaces
 
         bool IsExisting(int sourceId, string originalSourceId);
 
-        bool IsExisting(int newsId);
+        bool IsExisting(string originalSourceId, string originalSourceUrl);
     }
 }

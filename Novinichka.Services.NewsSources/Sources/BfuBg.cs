@@ -12,10 +12,10 @@ namespace Novinichka.Services.NewsSources.Sources
         private const string AnchorTagSelector = "h2.entry-title a";
 
         private const int CountOfNews = 5;
-        private const int StartNews = 40000;
-        private const int EndNews = 50000;
+        private const int StartPage = 40000;
+        private const int EndPage = 50000;
 
-        private readonly string url = $"archive/{DateTime.UtcNow.Year}/{DateTime.UtcNow.Month}/0";
+        private readonly string url = $"archive/{DateTime.UtcNow.Year}/{DateTime.UtcNow.Month}";
 
         public override string BaseUrl { get; set; } = "https://bfunion.bg/";
 
@@ -25,14 +25,13 @@ namespace Novinichka.Services.NewsSources.Sources
         public override IEnumerable<NewsModel> GetAllNews()
         {
             var counter = 1;
+            NewsModel currentNews;
 
-            for (var i = StartNews; i <= EndNews; i++)
+            for (var currentPage = StartPage; currentPage <= EndPage; currentPage++)
             {
-                NewsModel news;
-
                 try
                 {
-                    news = this.GetNews($"{this.BaseUrl}news/{i}/0");
+                    currentNews = this.GetNews($"{this.BaseUrl}news/{currentPage}/0");
                 }
                 catch (Exception e)
                 {
@@ -40,47 +39,24 @@ namespace Novinichka.Services.NewsSources.Sources
                     continue;
                 }
 
-                if (news is not null &&
-                    news.CreatedOn.Date != DateTime.UtcNow.Date &&
-                    news.CreatedOn.Date != DateTime.UtcNow.AddDays(-1).Date)
+                if (currentNews is not null &&
+                    currentNews.CreatedOn.Date != DateTime.UtcNow.Date &&
+                    currentNews.CreatedOn.Date != DateTime.UtcNow.AddDays(-1).Date)
                 {
-                    Console.WriteLine($"{counter++} => {news.OriginalUrl}");
-                    yield return news;
+                    Console.WriteLine($"{counter++} => {currentNews.OriginalUrl}");
+                    yield return currentNews;
                 }
             }
         }
 
         protected override NewsModel ParseDocument(IDocument document, string url)
         {
-            var newsTitle = document
-                .QuerySelector("div.tr-post h2.entry-title")
-                ?.TextContent
-                .Trim();
-
-            if (string.IsNullOrWhiteSpace(newsTitle))
-            {
-                return null;
-            }
-
-            var createdOnAsString = document
-                .QuerySelector("div.date")
-                ?.InnerHtml;
-
-            if (createdOnAsString is null)
-            {
-                return null;
-            }
-
-            var createdOn = DateTime.Parse(createdOnAsString, new CultureInfo("bg-BG"));
-
-            var content = document.QuerySelector("div.tr-details");
-
+            var newsTitleElement = document?.QuerySelector("div.tr-post div.post-content h2.entry-title");
+            var createdOnElement = document?.QuerySelector("div.date");
+            var contentElement = document?.QuerySelector("div.tr-details");
             var imageElement = document?.QuerySelector("div.entry-thumbnail img.img-responsive");
 
-            var originalSourceId = newsTitle.Replace(' ', '-').ToLower();
-
-            content.RemoveChildNodes(imageElement);
-            content.RemoveGivenTag("img");
+            contentElement.RemoveChildNodes(imageElement);
 
             string image = null;
             if (imageElement is not null)
@@ -88,7 +64,23 @@ namespace Novinichka.Services.NewsSources.Sources
                 image = this.BaseUrl.Remove(this.BaseUrl.Length - 1, 1) + imageElement?.GetAttribute("src");
             }
 
-            return new NewsModel(newsTitle, content?.InnerHtml.Trim(), createdOn, image, url, originalSourceId);
+            var newsTitle = newsTitleElement?.TextContent.Trim();
+
+            DateTime? createdOn = null;
+            if (createdOnElement != null)
+            {
+                createdOn = DateTime.Parse(createdOnElement.InnerHtml, new CultureInfo("bg-BG"));
+            }
+
+            var originalSourceId = newsTitle?.Replace(' ', '-').ToLower();
+            var content = contentElement?.InnerHtml.Trim();
+
+            if (string.IsNullOrWhiteSpace(newsTitle))
+            {
+                return null;
+            }
+
+            return new NewsModel(newsTitle, content, createdOn.Value, image, url, originalSourceId);
         }
     }
 }

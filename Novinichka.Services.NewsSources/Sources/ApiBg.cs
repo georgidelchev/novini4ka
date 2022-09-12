@@ -8,14 +8,15 @@ namespace Novinichka.Services.NewsSources.Sources
 {
     public class ApiBg : BaseSource
     {
-        private const string Url = "index.php/bg/prescentar/novini";
-        private const string UrlPaginationFragment = "?ccm_paging_p_b606=";
-        private const string UrlShouldContain = "bg/prescentar/novini";
-        private const string AnchorTagSelector = ".ccm-page-list .news-item a.news_more_link";
+        private const string Url = "bg/novini";
+        private const string UrlPaginationFragment = "?&p=";
+        private const string UrlShouldContain = "/bg/novini";
+        private const string AnchorTagSelector = ".news-panel a";
 
         private const int CountOfNews = 5;
-        private const int StartPage = 1;
-        private const int EndPage = 1100;
+        private const int StartPage = 0;
+        private const int EndPage = 10000;
+        private const int PaginationSkipCount = 20;
 
         public override string BaseUrl { get; set; } = "http://www.api.bg/";
 
@@ -27,7 +28,7 @@ namespace Novinichka.Services.NewsSources.Sources
             var counter = 1;
             IEnumerable<NewsModel> news;
 
-            for (var i = StartPage; i <= EndPage; i++)
+            for (var i = StartPage; i <= EndPage; i += PaginationSkipCount)
             {
                 try
                 {
@@ -49,32 +50,28 @@ namespace Novinichka.Services.NewsSources.Sources
 
         protected override NewsModel ParseDocument(IDocument document, string url)
         {
-            var newsTitle = document
-                .QuerySelector(".box h1")
-                ?.InnerHtml
-                .Trim();
+            var newsTitleElement = document.QuerySelector("section#single-news h1");
+            var contentElement = document.QuerySelector("section#single-news");
+            var imageElement = document.QuerySelector("section#single-news a img.img-thumbnail");
+            var createdOnElement = document.QuerySelector("section#single-news div.date");
 
-            var createdOnAsString = document
-                .QuerySelector(".news-article")
-                ?.ChildNodes[0];
+            contentElement?.RemoveChildNodes(imageElement);
+            contentElement?.RemoveChildNodes(newsTitleElement);
+            contentElement?.RemoveChildNodes(createdOnElement);
 
-            var createdOn = createdOnAsString == null ? 
-                DateTime.UtcNow : 
-                DateTime.ParseExact(createdOnAsString?.TextContent, "dd.MM.yyyy HH:mm", CultureInfo.InvariantCulture);
+            contentElement?.RemoveGivenTag("script");
 
-            var content = document.QuerySelector(".news-article");
+            var newsTitle = newsTitleElement?.InnerHtml.Trim();
+            var content = contentElement?.InnerHtml.Trim();
+            var image = imageElement?.GetAttribute("src");
+            var createdOn = createdOnElement != null ? DateTime.ParseExact(createdOnElement?.TextContent, "dd.MM.yyyy HH:mm", CultureInfo.InvariantCulture) : DateTime.UtcNow;
 
-            var originalSourceId = this.GetOriginalIdFromSourceUrl(url);
+            if (newsTitle == null || content == null)
+            {
+                return null;
+            }
 
-            var image = this.BaseUrl.Remove(this.BaseUrl.Length - 1, 1) + document?
-                .QuerySelector(".news-article img")
-                ?.GetAttribute("src");
-
-            content.RemoveGivenTag("img");
-            content.RemoveGivenTag("script");
-            content?.RemoveChild(createdOnAsString);
-
-            return new NewsModel(newsTitle, content?.InnerHtml, createdOn, image, url, originalSourceId);
+            return new NewsModel(newsTitle, content, createdOn, image, url, this.GetOriginalIdFromSourceUrl(url));
         }
     }
 }

@@ -5,6 +5,7 @@ using System.Net;
 using AngleSharp.Dom;
 using AngleSharp.Html.Dom;
 using AngleSharp.Html.Parser;
+using Novinichka.Common;
 
 namespace Novinichka.Services.NewsSources
 {
@@ -14,7 +15,7 @@ namespace Novinichka.Services.NewsSources
 
         protected HtmlParser Parser { get; set; } = new();
 
-        public virtual IEnumerable<NewsModel> GetAllNews()
+        public virtual IEnumerable<NewsModel> GetAllNews() 
             => new List<NewsModel>();
 
         public abstract IEnumerable<NewsModel> GetRecentNews();
@@ -31,12 +32,11 @@ namespace Novinichka.Services.NewsSources
                 .Where(l => !string.IsNullOrWhiteSpace(l.Attributes["href"]?.Value))
                 .Select(l => this.RebuildGivenUrl(l?.Attributes["href"]?.Value))
                 .Where(l => l?.Contains(urlShouldContain) == true)
-                .Distinct()
-                .ToList();
+                .Distinct();
 
             if (count > 0)
             {
-                links = links.Take(count).ToList();
+                links = links.Take(count);
             }
 
             if (!links.Any() && throwIfNoUrls)
@@ -44,14 +44,15 @@ namespace Novinichka.Services.NewsSources
                 throw new Exception("No news has been found.");
             }
 
-            return links.Select(this.GetNews)
-                .Where(x => x != null)
-                .ToList();
+            return links
+                .Select(this.GetNews)
+                .Where(x => x != null);
         }
 
         public virtual string GetOriginalIdFromSourceUrl(string url)
         {
-            var uri = new Uri(url.Trim().Trim('/'));
+            var trimmedUrl = url.Trim().Trim('/');
+            var uri = new Uri(trimmedUrl);
             var lastSegment = uri.Segments[^1];
 
             return WebUtility.UrlDecode(lastSegment);
@@ -62,13 +63,13 @@ namespace Novinichka.Services.NewsSources
         protected NewsModel GetNews(string url)
         {
             var webClient = new WebClient();
-
-            var html = webClient.DownloadString(url);
+            webClient.Headers.Add(HttpRequestHeader.UserAgent, GlobalConstants.UserAgentValue);
 
             IHtmlDocument document;
 
             try
             {
+                var html = webClient.DownloadString(url);
                 document = this.Parser.ParseDocument(html);
             }
             catch (WebException ex)
@@ -115,7 +116,7 @@ namespace Novinichka.Services.NewsSources
                 news.ImageUrl = this.RebuildGivenUrl(news.ImageUrl)?.Trim();
             }
 
-            news.OriginalSourceId = news.OriginalSourceId;
+            news.OriginalSourceId = news.OriginalSourceId.Trim();
 
             return news;
         }

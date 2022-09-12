@@ -22,6 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="AngleSharp" Version="0.16.1" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="5.0.6" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.6">
       <PrivateAssets>all</PrivateAssets>
@@ -40,6 +41,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Novinichka.Common\Novinichka.Common.csproj" />
+    <ProjectReference Include="..\..\Novinichka.Services.NewsSources\Novinichka.Services.NewsSources.csproj" />
     <ProjectReference Include="..\Novinichka.Data.Common\Novinichka.Data.Common.csproj" />
     <ProjectReference Include="..\Novinichka.Data.Models\Novinichka.Data.Models.csproj" />
   </ItemGroup>

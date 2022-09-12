@@ -29,19 +29,13 @@ namespace Novinichka.Services.Data.Implementations
 
         public async Task<int?> AddAsync(NewsModel model, int sourceId)
         {
-            if (this.IsExisting(sourceId, model.OriginalSourceId))
-            {
-                return null;
-            }
-
             var imageUrl = this.sourcesService.GetBigImageUrl(sourceId);
 
             if (model.ImageUrl != null)
             {
                 var imageBytes = new WebClient().DownloadData(model.ImageUrl);
 
-                imageUrl = await this.cloudinaryService
-                    .UploadPictureAsync(imageBytes, $"{model.Title}_Big", "NewsImages", 730, 500, "fit");
+                imageUrl = await this.cloudinaryService.UploadPictureAsync(imageBytes, $"{model.Title}_Big", "NewsImages", 730, 500, "fit");
             }
 
             var news = new News
@@ -83,9 +77,9 @@ namespace Novinichka.Services.Data.Implementations
                 .Any(n => n.SourceId == sourceId &&
                           n.OriginalSourceId == originalSourceId);
 
-        public bool IsExisting(int newsId)
+        public bool IsExisting(string originalSourceId, string originalSourceUrl)
             => this.newsRepository
                 .AllWithDeleted()
-                .Any(n => n.Id == newsId);
+                .Any(n => n.OriginalSourceId == originalSourceId && n.OriginalUrl == originalSourceUrl);
     }
 }

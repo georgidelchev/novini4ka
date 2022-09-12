@@ -147,7 +147,7 @@ namespace Novinichka.Web
             if (env.IsDevelopment())
             {
                 _ = app.UseHangfireServer(new BackgroundJobServerOptions { WorkerCount = 20 });
-                app.UseHangfireDashboard("/hangfire", new DashboardOptions { Authorization = new[] { new HangfireAuthFilter() } });
+                app.UseHangfireDashboard("/hangfire"/*, new DashboardOptions { Authorization = new[] { new HangfireAuthFilter() } }*/);
             }
 
             app.UseEndpoints(endpoints =>

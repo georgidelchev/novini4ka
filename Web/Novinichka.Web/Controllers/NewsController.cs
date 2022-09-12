@@ -18,10 +18,10 @@ namespace Novinichka.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Details(int id)
         {
-            if (!this.newsService.IsExisting(id))
-            {
-                this.TempData["ErrorMessage"] = "This news is not existing!";
-            }
+            //if (!this.newsService.IsExisting(id))
+            //{
+            //    this.TempData["ErrorMessage"] = "This news is not existing!";
+            //}
 
             var viewModel = await this.newsService.GetDetails<NewsViewModel>(id);
             return this.View(viewModel);

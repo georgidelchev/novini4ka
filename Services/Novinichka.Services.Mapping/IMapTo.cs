@@ -1,7 +1,6 @@
-﻿namespace Novinichka.Services.Mapping
+﻿namespace Novinichka.Services.Mapping;
+
+// ReSharper disable once UnusedTypeParameter
+public interface IMapTo<T>
 {
-    // ReSharper disable once UnusedTypeParameter
-    public interface IMapTo<T>
-    {
-    }
 }

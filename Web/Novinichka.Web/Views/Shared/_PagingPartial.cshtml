@@ -8,6 +8,7 @@
         <li class="page-item @if (!Model.HasPreviousPage) {<text>disabled</text>}">
             <a class="page-link" asp-route-id="@Model.PreviousPageNumber">&lsaquo;</a>
         </li>
+
         @for (var i = Model.PageNumber - 3; i < Model.PageNumber; i++)
         {
             @if (i > 0)
@@ -15,12 +16,14 @@
                 <li class="page-item"><a class="page-link" asp-route-id="@i">@i</a></li>
             }
         }
+
         <li class="page-item active">
             <span class="page-link">
                 @Model.PageNumber
                 <span class="sr-only">(current)</span>
             </span>
         </li>
+
         @for (var i = Model.PageNumber + 1; i <= Model.PageNumber + 3; i++)
         {
             if (i <= Model.PagesCount)
@@ -28,6 +31,7 @@
                 <li class="page-item"><a class="page-link" asp-route-id="@i">@i</a></li>
             }
         }
+
         <li class="page-item @if (!Model.HasNextPage) {<text>disabled</text>}">
             <a class="page-link" asp-route-id="@Model.NextPageNumber">&rsaquo;</a>
         </li>

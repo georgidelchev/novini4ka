@@ -7,43 +7,34 @@ using Novinichka.Services.Data.Interfaces;
 using Novinichka.Web.ViewModels;
 using Novinichka.Web.ViewModels.News;
 
-namespace Novinichka.Web.Controllers
+namespace Novinichka.Web.Controllers;
+
+public class HomeController : BaseController
 {
-    public class HomeController : BaseController
+    private readonly INewsService newsService;
+
+    public HomeController(INewsService newsService)
+        => this.newsService = newsService;
+
+    public async Task<IActionResult> Index(int id = 1)
     {
-        private readonly INewsService newsService;
+        var news = await this.newsService.GetAll<ShortNewsViewModel>();
 
-        public HomeController(
-            INewsService newsService)
+        var viewModel = new ListAllNewsViewModel()
         {
-            this.newsService = newsService;
-        }
+            ItemsPerPage = 12,
+            News = news.Skip((id - 1) * 12).Take(12),
+            PageNumber = id,
+            ItemsCount = news.Count(),
+        };
 
-        public async Task<IActionResult> Index(int id = 1)
-        {
-            var news = await this.newsService.GetAll<ShortNewsViewModel>();
-
-            var viewModel = new ListAllNewsViewModel()
-            {
-                ItemsPerPage = 12,
-                News = news.Skip((id - 1) * 12).Take(12),
-                PageNumber = id,
-                ItemsCount = news.Count(),
-            };
-
-            return this.View(viewModel);
-        }
-
-        public IActionResult Privacy()
-        {
-            return this.View();
-        }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return this.View(
-                new ErrorViewModel { RequestId = Activity.Current?.Id ?? this.HttpContext.TraceIdentifier });
-        }
+        return this.View(viewModel);
     }
+
+    public IActionResult Privacy()
+        => this.View();
+
+    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+    public IActionResult Error()
+        => this.View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? this.HttpContext.TraceIdentifier });
 }

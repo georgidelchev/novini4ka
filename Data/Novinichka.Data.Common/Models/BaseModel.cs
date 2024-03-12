@@ -1,15 +1,14 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace Novinichka.Data.Common.Models
+namespace Novinichka.Data.Common.Models;
+
+public abstract class BaseModel<TKey> : IAuditInfo
 {
-    public abstract class BaseModel<TKey> : IAuditInfo
-    {
-        [Key]
-        public TKey Id { get; set; }
+    [Key]
+    public TKey Id { get; set; }
 
-        public DateTime CreatedOn { get; set; }
+    public DateTime CreatedOn { get; set; }
 
-        public DateTime? ModifiedOn { get; set; }
-    }
+    public DateTime? ModifiedOn { get; set; }
 }

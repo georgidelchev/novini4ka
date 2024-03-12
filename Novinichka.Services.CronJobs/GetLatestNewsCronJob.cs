@@ -10,49 +10,48 @@ using Novinichka.Data.Models;
 using Novinichka.Services.Data.Interfaces;
 using Novinichka.Services.NewsSources;
 
-namespace Novinichka.Services.CronJobs
-{
-    public class GetLatestNewsCronJob
-    {
-        private readonly IDeletableEntityRepository<Source> sourcesRepository;
-        private readonly INewsService newsService;
+namespace Novinichka.Services.CronJobs;
 
-        public GetLatestNewsCronJob(
-            IDeletableEntityRepository<Source> sourcesRepository,
-            INewsService newsService)
+public class GetLatestNewsCronJob
+{
+    private readonly IDeletableEntityRepository<Source> sourcesRepository;
+    private readonly INewsService newsService;
+
+    public GetLatestNewsCronJob(
+        IDeletableEntityRepository<Source> sourcesRepository,
+        INewsService newsService)
+    {
+        this.sourcesRepository = sourcesRepository;
+        this.newsService = newsService;
+    }
+
+    [AutomaticRetry(Attempts = 3)]
+    public async Task StartWorking(string typeName, PerformContext context)
+    {
+        var source = this.sourcesRepository
+            .AllWithDeleted()
+            .FirstOrDefault(x => x.TypeName == typeName);
+
+        if (source == null)
         {
-            this.sourcesRepository = sourcesRepository;
-            this.newsService = newsService;
+            throw new Exception($"Source {typeName} has not found in the database!");
         }
 
-        [AutomaticRetry(Attempts = 3)]
-        public async Task StartWorking(string typeName, PerformContext context)
+        var instance = ReflectionHelpers.GetInstance<BaseSource>(typeName);
+
+        var news = instance
+            .GetAllNews()
+            .ToList();
+
+        foreach (var currentNews in news.WithProgress(context.WriteProgressBar()))
         {
-            var source = this.sourcesRepository
-                .AllWithDeleted()
-                .FirstOrDefault(x => x.TypeName == typeName);
-
-            if (source == null)
+            if (!this.newsService.IsExisting(currentNews.OriginalSourceId, currentNews.OriginalUrl))
             {
-                throw new Exception($"Source {typeName} has not found in the database!");
-            }
+                var newsId = await this.newsService.AddAsync(currentNews, source.Id);
 
-            var instance = ReflectionHelpers.GetInstance<BaseSource>(typeName);
-
-            var news = instance
-                .GetAllNews()
-                .ToList();
-
-            foreach (var currentNews in news.WithProgress(context.WriteProgressBar()))
-            {
-                if (!this.newsService.IsExisting(currentNews.OriginalSourceId, currentNews.OriginalUrl))
+                if (newsId.HasValue)
                 {
-                    var newsId = await this.newsService.AddAsync(currentNews, source.Id);
-
-                    if (newsId.HasValue && currentNews != null)
-                    {
-                        context.WriteLine($"[ID:{newsId}] Successfully imported news with title: {currentNews.Title}");
-                    }
+                    context.WriteLine($"[ID:{newsId}] Successfully imported news with title: {currentNews.Title}");
                 }
             }
         }

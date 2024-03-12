@@ -5,32 +5,31 @@ using System.Collections.Generic;
 using Microsoft.AspNetCore.Identity;
 using Novinichka.Data.Common.Models;
 
-namespace Novinichka.Data.Models
+namespace Novinichka.Data.Models;
+
+public class ApplicationUser : IdentityUser, IAuditInfo, IDeletableEntity
 {
-    public class ApplicationUser : IdentityUser, IAuditInfo, IDeletableEntity
+    public ApplicationUser()
     {
-        public ApplicationUser()
-        {
-            this.Id = Guid.NewGuid().ToString();
-        }
-
-        // Audit info
-        public DateTime CreatedOn { get; set; }
-
-        public DateTime? ModifiedOn { get; set; }
-
-        // Deletable entity
-        public bool IsDeleted { get; set; }
-
-        public DateTime? DeletedOn { get; set; }
-
-        public virtual ICollection<IdentityUserRole<string>> Roles { get; set; }
-            = new HashSet<IdentityUserRole<string>>();
-
-        public virtual ICollection<IdentityUserClaim<string>> Claims { get; set; }
-            = new HashSet<IdentityUserClaim<string>>();
-
-        public virtual ICollection<IdentityUserLogin<string>> Logins { get; set; }
-            = new HashSet<IdentityUserLogin<string>>();
+        this.Id = Guid.NewGuid().ToString();
     }
+
+    // Audit info
+    public DateTime CreatedOn { get; set; }
+
+    public DateTime? ModifiedOn { get; set; }
+
+    // Deletable entity
+    public bool IsDeleted { get; set; }
+
+    public DateTime? DeletedOn { get; set; }
+
+    public virtual ICollection<IdentityUserRole<string>> Roles { get; set; }
+        = new HashSet<IdentityUserRole<string>>();
+
+    public virtual ICollection<IdentityUserClaim<string>> Claims { get; set; }
+        = new HashSet<IdentityUserClaim<string>>();
+
+    public virtual ICollection<IdentityUserLogin<string>> Logins { get; set; }
+        = new HashSet<IdentityUserLogin<string>>();
 }

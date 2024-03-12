@@ -1,9 +1,8 @@
 ﻿using AutoMapper;
 
-namespace Novinichka.Services.Mapping
+namespace Novinichka.Services.Mapping;
+
+public interface IHaveCustomMappings
 {
-    public interface IHaveCustomMappings
-    {
-        void CreateMappings(IProfileExpression configuration);
-    }
+    void CreateMappings(IProfileExpression configuration);
 }

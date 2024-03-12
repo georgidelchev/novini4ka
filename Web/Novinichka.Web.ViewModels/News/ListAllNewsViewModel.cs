@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
 
-namespace Novinichka.Web.ViewModels.News
+namespace Novinichka.Web.ViewModels.News;
+
+public class ListAllNewsViewModel : PagingViewModel
 {
-    public class ListAllNewsViewModel : PagingViewModel
-    {
-        public IEnumerable<ShortNewsViewModel> News { get; set; }
-    }
+    public IEnumerable<ShortNewsViewModel> News { get; set; }
 }

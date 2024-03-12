@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
 
-namespace Novinichka.Web.ViewModels.Administration.Sources
+namespace Novinichka.Web.ViewModels.Administration.Sources;
+
+public class ListAllSourcesViewModel : PagingViewModel
 {
-    public class ListAllSourcesViewModel : PagingViewModel
-    {
-        public IEnumerable<GetAllSourcesViewModel> Sources { get; set; }
-    }
+    public IEnumerable<GetAllSourcesViewModel> Sources { get; set; }
 }

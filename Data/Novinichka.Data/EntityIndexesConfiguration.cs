@@ -3,22 +3,23 @@
 using Microsoft.EntityFrameworkCore;
 using Novinichka.Data.Common.Models;
 
-namespace Novinichka.Data
-{
-    internal static class EntityIndexesConfiguration
-    {
-        public static void Configure(ModelBuilder modelBuilder)
-        {
-            // IDeletableEntity.IsDeleted index
-            var deletableEntityTypes = modelBuilder.Model
-                .GetEntityTypes()
-                .Where(et => et.ClrType != null && typeof(IDeletableEntity).IsAssignableFrom(et.ClrType));
+namespace Novinichka.Data;
 
-            foreach (var deletableEntityType in deletableEntityTypes)
-            {
-                modelBuilder.Entity(deletableEntityType.ClrType)
-                    .HasIndex(nameof(IDeletableEntity.IsDeleted));
-            }
+internal static class EntityIndexesConfiguration
+{
+    public static void Configure(ModelBuilder modelBuilder)
+    {
+        // IDeletableEntity.IsDeleted index
+        var deletableEntityTypes = modelBuilder
+            .Model
+            .GetEntityTypes()
+            .Where(et => et.ClrType != null && typeof(IDeletableEntity).IsAssignableFrom(et.ClrType));
+
+        foreach (var deletableEntityType in deletableEntityTypes)
+        {
+            modelBuilder
+                .Entity(deletableEntityType.ClrType)
+                .HasIndex(nameof(IDeletableEntity.IsDeleted));
         }
     }
 }

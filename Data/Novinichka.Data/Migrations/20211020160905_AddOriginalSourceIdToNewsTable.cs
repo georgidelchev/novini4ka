@@ -11,7 +11,7 @@ namespace Novinichka.Data.Migrations
                 table: "News",
                 type: "nvarchar(max)",
                 nullable: false,
-                defaultValue: "");
+                defaultValue: string.Empty);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

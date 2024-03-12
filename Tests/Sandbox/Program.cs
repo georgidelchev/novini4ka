@@ -14,74 +14,65 @@ using Novinichka.Data.Common.Repositories;
 using Novinichka.Data.Models;
 using Novinichka.Data.Repositories;
 using Novinichka.Data.Seeding;
-using Novinichka.Services.Data;
 using Novinichka.Services.Data.Implementations;
 using Novinichka.Services.Data.Interfaces;
 using Novinichka.Services.Messaging;
 
-namespace Sandbox
+namespace Sandbox;
+
+public static class Program
 {
-    public static class Program
+    public static int Main(string[] args)
     {
-        public static int Main(string[] args)
+        Console.WriteLine($"{typeof(Program).Namespace} ({string.Join(" ", args)}) starts working...");
+        var serviceCollection = new ServiceCollection();
+        ConfigureServices(serviceCollection);
+        IServiceProvider serviceProvider = serviceCollection.BuildServiceProvider(true);
+
+        // Seed data on application startup
+        using (var serviceScope = serviceProvider.CreateScope())
         {
-            Console.WriteLine($"{typeof(Program).Namespace} ({string.Join(" ", args)}) starts working...");
-            var serviceCollection = new ServiceCollection();
-            ConfigureServices(serviceCollection);
-            IServiceProvider serviceProvider = serviceCollection.BuildServiceProvider(true);
-
-            // Seed data on application startup
-            using (var serviceScope = serviceProvider.CreateScope())
-            {
-                var dbContext = serviceScope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-                dbContext.Database.Migrate();
-                new ApplicationDbContextSeeder().SeedAsync(dbContext, serviceScope.ServiceProvider).GetAwaiter().GetResult();
-            }
-
-            using (var serviceScope = serviceProvider.CreateScope())
-            {
-                serviceProvider = serviceScope.ServiceProvider;
-
-                return Parser.Default.ParseArguments<SandboxOptions>(args).MapResult(
-                    opts => SandboxCode(opts, serviceProvider).GetAwaiter().GetResult(),
-                    _ => 255);
-            }
+            var dbContext = serviceScope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+            dbContext.Database.Migrate();
+            new ApplicationDbContextSeeder().SeedAsync(dbContext, serviceScope.ServiceProvider).GetAwaiter().GetResult();
         }
 
-        private static async Task<int> SandboxCode(SandboxOptions options, IServiceProvider serviceProvider)
+        using (var serviceScope = serviceProvider.CreateScope())
         {
-            var sw = Stopwatch.StartNew();
+            serviceProvider = serviceScope.ServiceProvider;
 
-            var settingsService = serviceProvider.GetService<ISettingsService>();
-            Console.WriteLine($"Count of settings: {settingsService.GetCount()}");
-
-            Console.WriteLine(sw.Elapsed);
-            return await Task.FromResult(0);
+            return Parser.Default.ParseArguments<SandboxOptions>(args).MapResult(
+                opts => SandboxCode(opts, serviceProvider).GetAwaiter().GetResult(),
+                _ => 255);
         }
+    }
 
-        private static void ConfigureServices(ServiceCollection services)
-        {
-            var configuration = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json", false, true)
-                .AddEnvironmentVariables()
-                .Build();
+    private static async Task<int> SandboxCode(SandboxOptions options, IServiceProvider serviceProvider)
+    {
+        return await Task.FromResult(0);
+    }
 
-            services.AddSingleton<IConfiguration>(configuration);
+    private static void ConfigureServices(ServiceCollection services)
+    {
+        var configuration = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory())
+            .AddJsonFile("appsettings.json", false, true)
+            .AddEnvironmentVariables()
+            .Build();
 
-            services.AddDbContext<ApplicationDbContext>(
-                options => options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"))
-                    .UseLoggerFactory(new LoggerFactory()));
+        services.AddSingleton<IConfiguration>(configuration);
 
-            services.AddDefaultIdentity<ApplicationUser>(IdentityOptionsProvider.GetIdentityOptions)
-                .AddRoles<ApplicationRole>().AddEntityFrameworkStores<ApplicationDbContext>();
+        services.AddDbContext<ApplicationDbContext>(
+            options => options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"))
+                .UseLoggerFactory(new LoggerFactory()));
 
-            services.AddScoped(typeof(IDeletableEntityRepository<>), typeof(EfDeletableEntityRepository<>));
-            services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
-            services.AddScoped<IDbQueryRunner, DbQueryRunner>();
+        services.AddDefaultIdentity<ApplicationUser>(IdentityOptionsProvider.GetIdentityOptions)
+            .AddRoles<ApplicationRole>().AddEntityFrameworkStores<ApplicationDbContext>();
 
-            // Application services
-            services.AddTransient<IEmailSender, NullMessageSender>();
-            services.AddTransient<ISettingsService, SettingsService>();
-        }
+        services.AddScoped(typeof(IDeletableEntityRepository<>), typeof(EfDeletableEntityRepository<>));
+        services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
+        services.AddScoped<IDbQueryRunner, DbQueryRunner>();
+
+        // Application services
+        services.AddTransient<IEmailSender, NullMessageSender>();
     }
 }

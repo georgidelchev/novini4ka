@@ -1,17 +1,16 @@
 ﻿using System.Collections.Generic;
 
-namespace Novinichka.Services.NewsSources
+namespace Novinichka.Services.NewsSources;
+
+public interface ISource
 {
-    public interface ISource
-    {
-        string BaseUrl { get; set; }
+    string BaseUrl { get; set; }
 
-        IEnumerable<NewsModel> GetAllNewsUrls(string url, string anchorTagSelector, string urlShouldContain = "", int count = 0, bool throwIfNoUrls = true);
+    IEnumerable<NewsModel> GetAllNewsUrls(string url, string anchorTagSelector, string urlShouldContain = "", int count = 0, bool throwIfNoUrls = true);
 
-        public IEnumerable<NewsModel> GetRecentNews();
+    public IEnumerable<NewsModel> GetRecentNews();
 
-        public IEnumerable<NewsModel> GetAllNews();
+    public IEnumerable<NewsModel> GetAllNews();
 
-        string GetOriginalIdFromSourceUrl(string url);
-    }
+    string GetOriginalIdFromSourceUrl(string url);
 }
